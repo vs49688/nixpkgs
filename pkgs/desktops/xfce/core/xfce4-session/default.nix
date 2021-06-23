@@ -1,4 +1,4 @@
-{ mkXfceDerivation, polkit, exo, libxfce4util, libxfce4ui, xfconf, iceauth, gtk3, glib, libwnck3, xfce4-session }:
+{ mkXfceDerivation, polkit, exo, libxfce4util, libxfce4ui, xfconf, iceauth, gtk3, glib, libwnck, xfce4-session }:
 
 mkXfceDerivation {
   category = "xfce";
@@ -7,7 +7,7 @@ mkXfceDerivation {
 
   sha256 = "0b8vkcqn2arjp6qdwmzr0f84n8fjgy2kbf9h4gq03400ar1l111c";
 
-  buildInputs = [ exo gtk3 glib libxfce4ui libxfce4util libwnck3 xfconf polkit iceauth ];
+  buildInputs = [ exo gtk3 glib libxfce4ui libxfce4util libwnck xfconf polkit iceauth ];
 
   configureFlags = [ "--with-xsession-prefix=${placeholder "out"}" ];
 

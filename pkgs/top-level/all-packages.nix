@@ -16809,9 +16809,8 @@ in
 
   libwmf = callPackage ../development/libraries/libwmf { };
 
-  libwnck = libwnck2;
-  libwnck2 = callPackage ../development/libraries/libwnck { };
-  libwnck3 = callPackage ../development/libraries/libwnck/3.x.nix { };
+  libwnck = callPackage ../development/libraries/libwnck { };
+  libwnck2 = callPackage ../development/libraries/libwnck/2.nix { };
 
   libwpd = callPackage ../development/libraries/libwpd { };
 

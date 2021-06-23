@@ -13,7 +13,7 @@
 , itstool
 , libgweather
 , libsoup
-, libwnck3
+, libwnck
 , libxml2
 , pkg-config
 , polkit
@@ -68,7 +68,7 @@ stdenv.mkDerivation rec {
     gtk3
     libgweather
     libsoup
-    libwnck3
+    libwnck
     polkit
     systemd
   ];
