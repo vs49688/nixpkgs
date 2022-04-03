@@ -1821,6 +1821,8 @@ with pkgs;
 
   dotter = callPackage ../tools/misc/dotter { };
 
+  drminfo = callPackage ../tools/graphics/drminfo { };
+
   droidcam = callPackage ../applications/video/droidcam { };
 
   ecdsautils = callPackage ../tools/security/ecdsautils { };
