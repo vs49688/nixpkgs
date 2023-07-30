@@ -25,12 +25,19 @@
 , flatbuffers
 , llvm_16
 , cubeb
-, faudioSupport ? true
+, faudioSupport ? stdenv.isLinux
 , faudio
 , SDL2
-, waylandSupport ? true
+, waylandSupport ? stdenv.isLinux
 , wayland
+
+# Apple
+, AudioUnit
+, moltenvk
 }:
+
+assert faudioSupport -> stdenv.isLinux;
+assert waylandSupport -> stdenv.isLinux;
 
 let
   # Keep these separate so the update script can regex them
@@ -73,6 +80,7 @@ stdenv.mkDerivation {
     "-DUSE_SYSTEM_PUGIXML=ON"
     "-DUSE_SYSTEM_FLATBUFFERS=ON"
     "-DUSE_SYSTEM_SDL=ON"
+    "-DUSE_SYSTEM_MVK=ON"
     "-DWITH_LLVM=ON"
     "-DBUILD_LLVM=OFF"
     "-DUSE_NATIVE_INSTRUCTIONS=OFF"
@@ -83,8 +91,10 @@ stdenv.mkDerivation {
 
   buildInputs = [
     qtbase qtquickcontrols qtmultimedia openal glew vulkan-headers vulkan-loader libpng ffmpeg
-    libevdev zlib libusb1 curl wolfssl python3 pugixml flatbuffers llvm_16 libSM
-  ] ++ cubeb.passthru.backendLibs
+    zlib libusb1 curl wolfssl python3 pugixml flatbuffers llvm_16 libSM
+  ] ++ lib.optionals stdenv.isLinux [ libevdev ]
+    ++ lib.optionals stdenv.isDarwin [ AudioUnit moltenvk ]
+    ++ cubeb.passthru.backendLibs
     ++ lib.optionals faudioSupport [ faudio SDL2 ]
     ++ lib.optional waylandSupport wayland;
 
@@ -100,6 +110,6 @@ stdenv.mkDerivation {
     homepage = "https://rpcs3.net/";
     maintainers = with maintainers; [ abbradar neonfuz ilian zane ];
     license = licenses.gpl2Only;
-    platforms = [ "x86_64-linux" "aarch64-linux" ];
+    platforms = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
   };
 }

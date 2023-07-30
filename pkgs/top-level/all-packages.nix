@@ -2609,7 +2609,14 @@ with pkgs;
 
   rpcemu = callPackage ../applications/emulators/rpcemu { };
 
-  rpcs3 = libsForQt5.callPackage ../applications/emulators/rpcs3 { };
+  rpcs3 = libsForQt5.callPackage ../applications/emulators/rpcs3 {
+    inherit (darwin) moltenvk;
+    inherit (darwin.apple_sdk_11_0.frameworks) AudioUnit;
+
+    stdenv =
+      if stdenv.isDarwin then darwin.apple_sdk_11_0.llvmPackages_16.stdenv
+      else stdenv;
+  };
 
   ruffle = callPackage ../applications/emulators/ruffle { };
 
