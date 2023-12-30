@@ -11,7 +11,7 @@
 , libdaemon
 , libsodium
 , libgcrypt
-, ffmpeg
+, ffmpeg-headless
 , libuuid
 , unixtools
 , popt
@@ -84,9 +84,13 @@ stdenv.mkDerivation rec {
     libsodium
     libgcrypt
     libuuid
-    ffmpeg
+    ffmpeg-headless
   ]
   ++ optional stdenv.isLinux glib;
+
+  patches = [
+    ./configfile-install-fix.diff
+  ];
 
   postPatch = ''
     sed -i -e 's/G_BUS_TYPE_SYSTEM/G_BUS_TYPE_SESSION/g' dbus-service.c
@@ -114,6 +118,12 @@ stdenv.mkDerivation rec {
   ++ optional enableMpris "--with-mpris-interface"
   ++ optional enableLibdaemon "--with-libdaemon"
   ++ optional enableAirplay2 "--with-airplay-2";
+
+  postInstall = ''
+    make DESTDIR=$out install-config-files
+  '';
+
+  outputs = [ "out" "man" ];
 
   strictDeps = true;
 
